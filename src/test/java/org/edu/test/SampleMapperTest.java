@@ -6,19 +6,23 @@ import java.util.Random;
 import javax.inject.Inject;
 
 import org.edu.dao.IF_SampleDAO;
+import org.edu.service.IF_SampleService;
+import org.edu.service.SampleServiceImpl;
 import org.edu.vo.MemberVO;
 // import org.edu.dao.SampleSelectProvider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
+@WebAppConfiguration //JUnit과 AOP동시사용 에러 처리를 위해
 @RunWith(SpringJUnit4ClassRunner.class) 
 @ContextConfiguration(locations ={"file:src/main/webapp/WEB-INF/spring/**/*.xml"})
 public class SampleMapperTest {
 	
 	/**
-	 * hsql 사용시 아래 설정은 무시하셔도 됩니다.
+	 * hsql 사용시 아래 설정은 무시하셔도 됩니다. 
 	 * 실습시 Mysql 에 아래 3가지 쿼리를 실행 하고 작업 시작 합니다.
 	 * CREATE SCHEMA `interface` DEFAULT CHARACTER SET utf8 ;
 	 * create table member
@@ -39,27 +43,29 @@ public class SampleMapperTest {
 	@Inject
 	private IF_SampleDAO mapper; //인터페이스를 실행가능하게 mapper변수로 지정.
 	//클래스를 싱행변수로 사용시 => IF_SampleMapper mapper = new IF_SampleMapper();
+	@Inject
+	private IF_SampleService sampleService;
 	
 	@Test
-	public void testInsertMember() {
+	public void testInsertMember() throws Exception {
 		int vRandom = 0;
 		Random ran = new Random();
 		vRandom = ran.nextInt();
-		testSelectMember();
-		System.out.println("위쪽은 입력 전 리스트입니다.");
+		//testSelectMember();                                                                         
+		//System.out.println("위쪽은 입력 전 리스트입니다.");
 		MemberVO vo = new MemberVO();
 		vo.setUserid("user15" + vRandom);
 		vo.setUserpw("1234");
 	    vo.setUsername("각시탈");
 	    vo.setEmail("user10@test.com");
-	    mapper.insertMember(vo);
-	    System.out.println("아래쪽은 입력 후 리스트입니다.");
-	    testSelectMember();
+	    sampleService.insertMember(vo);
+	    //System.out.println("아래쪽은 입력 후 리스트입니다.");
+	    //testSelectMember();
 	}
 	@Test
 	public void testSelectMember() {
 		List<MemberVO> list = mapper.selectMember();
-		int cnt = 1;
+		/*int cnt = 1;
 		for(MemberVO vo:list) {
 			System.out.println(
 					"번 호: " + cnt++ + "번" + 
@@ -68,12 +74,12 @@ public class SampleMapperTest {
 					" 이름: " + vo.getUsername() +
 					"이메일: " + vo.getEmail()
 					); 
-		}
+		}*/
 	}
 	@Test
 	public void testUpdateMember() {
-		testSelectMember();
-		System.out.println("위에서 수정 전 이름을 확인하세요.");
+		//testSelectMember();
+		//System.out.println("위에서 수정 전 이름을 확인하세요.");
 		
 		MemberVO vo = new MemberVO(); 
 		//수정은 여러개의 변수값을 변경하기때문에 MemberVO라는 클래스변수를 매개변수로 사용한다.
@@ -83,17 +89,17 @@ public class SampleMapperTest {
 		vo.setEmail("americano@coffee.com");
 		mapper.updateMember(vo);
 		
-		System.out.println("수정 후 이름을 아래에서 확인하세요.");
-		testSelectMember();
+		//System.out.println("수정 후 이름을 아래에서 확인하세요.");
+		//testSelectMember();
 	}
 	
 	@Test
 	public void testDeleteMember() { 
-		System.out.println("삭제 전 회원리스트입니다.");
-		testSelectMember();
-		mapper.deleteMember("user11");
-		System.out.println("아래는 지운 후 회원리스트입니다.");
-		testSelectMember();
+		//System.out.println("삭제 전 회원리스트입니다.");
+		//testSelectMember();
+		mapper.deleteMember("op");
+		//System.out.println("아래는 지운 후 회원리스트입니다.");
+		//testSelectMember();
 	}
 	
 	//DB연동방식1 - 우리 스프링프레임웍에서 사용하는 방식
