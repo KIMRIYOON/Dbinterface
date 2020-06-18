@@ -31,6 +31,15 @@ public class HomeController {
 	private IF_SampleService sampleService;
 	
 	/**
+	 * 회원수정을 위한 경로, home.jsp와 같이 사용.
+	 * @throws Exception 
+	 */
+	@RequestMapping(value = "/admin/member/update", method = RequestMethod.POST)
+	public String updateMember(MemberVO memberVO, Model model, RedirectAttributes rdat) throws Exception {
+		sampleService.updateMember(memberVO);;
+		return "redirect:/"; //수정된 후 화면 리플레쉬하는 효과.
+	}
+	/**
 	 * 회원삭제를 위한 경로, home.jsp와 같이 사용.
 	 * @throws Exception 
 	 */

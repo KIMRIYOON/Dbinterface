@@ -85,6 +85,7 @@ p {color:red;}
 				<th scope="col">사용자이메일</th>
 				<th scope="col">사용자등록일</th>
 				<th scope="col">사용자수정일</th>
+				<th scope="col">수정</th>
 				<th scope="col">삭제</th>
 			</tr>
 		</thead>
@@ -92,15 +93,19 @@ p {color:red;}
 		<c:forEach items="${memberList}" var="memberVO" varStatus="status">
 		<tr>
 				<td>${status.count}</td>
-				<td>${memberVO.userid}</td>
-				<td>${memberVO.userpw}</td>
-				<td>${memberVO.username}</td>
-				<td>${memberVO.email}</td>
+				<form action="/admin/member/update" method="post">
+				<td>${memberVO.userid}
+				<input type="hidden" name="userid" value="${memberVO.userid}"></td>
+				<td><input type="text" name="userpw" value="${memberVO.userpw}"></td>
+				<td><input type="text" name="username" value="${memberVO.username}"></td>
+				<td><input type="text" name="email" value="${memberVO.email}"></td>
 				<td>${memberVO.regdate}</td>
 				<td>${memberVO.updatedate}</td>
+				<td><input type="submit" value="수정"></td>
+				</form>
 				<td>
 				<form action="/admin/member/delete" method="post">
-				<input type="text" value="${memberVO.userid}" name="userid">
+				<input type="hidden" value="${memberVO.userid}" name="userid">
 				<input type="submit" value="삭제">
 				</form>
 				</td>
